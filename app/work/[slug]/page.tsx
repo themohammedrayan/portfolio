@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CV_PATH, caseStudies } from "@/content/site";
-import { loadProfile } from "@/lib/profile";
+import { countable, loadProfile } from "@/lib/profile";
 import s from "./case.module.css";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -29,7 +29,7 @@ export default async function CaseStudyPage({ params }: Params) {
 
   return (
     <article>
-      <header className={`wrap ${s.header}`}>
+      <header className={`wrap ${s.header}`} data-spotlight>
         <Link href="/#work" className={s.back}>
           ← All work
         </Link>
@@ -70,9 +70,11 @@ export default async function CaseStudyPage({ params }: Params) {
 
       <section className={s.stats} aria-label="Key numbers">
         <div className={`wrap ${s.statsInner}`}>
-          {c.stats.map((st) => (
-            <div key={st.label} data-reveal>
-              <p className={`${s.statValue} num`}>{st.value}</p>
+          {c.stats.map((st, n) => (
+            <div key={st.label} data-reveal style={{ "--d": `${n * 120}ms` } as React.CSSProperties}>
+              <p className={`${s.statValue} num`} {...(countable(st.value) ? { "data-count": "" } : {})}>
+                {st.value}
+              </p>
               <p className={s.statLabel}>{st.label}</p>
             </div>
           ))}
@@ -80,42 +82,61 @@ export default async function CaseStudyPage({ params }: Params) {
       </section>
 
       <div className={`wrap ${s.body}`}>
-        <section className={s.block} data-reveal>
-          <h2>The problem</h2>
-          <div>
-            {c.problem.map((t) => (
-              <p key={t}>{t}</p>
-            ))}
-          </div>
-        </section>
-        <section className={s.block} data-reveal>
-          <h2>What I did</h2>
-          <ul>
-            {c.did.map((t) => (
-              <li key={t}>{t}</li>
-            ))}
-          </ul>
-        </section>
-        <section className={s.block} data-reveal>
-          <h2>Outcome</h2>
-          <div>
-            {c.outcome.map((t) => (
-              <p key={t} className={s.outcome}>
-                {t}
-              </p>
-            ))}
-          </div>
-        </section>
+        <aside className={s.toc} aria-label="On this page">
+          <a href="#problem" data-spy="problem">
+            The problem
+          </a>
+          <a href="#did" data-spy="did">
+            What I did
+          </a>
+          <a href="#outcome" data-spy="outcome">
+            Outcome
+          </a>
+        </aside>
+        <div>
+          <section id="problem" className={s.block} data-reveal>
+            <h2>The problem</h2>
+            <div>
+              {c.problem.map((t) => (
+                <p key={t}>{t}</p>
+              ))}
+            </div>
+          </section>
+          <section id="did" className={s.block}>
+            <h2 data-reveal>What I did</h2>
+            <ul>
+              {c.did.map((t, n) => (
+                <li key={t} data-reveal style={{ "--d": `${(n % 3) * 80}ms` } as React.CSSProperties}>
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </section>
+          <section id="outcome" className={s.block} data-reveal>
+            <h2>Outcome</h2>
+            <div>
+              {c.outcome.map((t) => (
+                <p key={t} className={s.outcome}>
+                  {t}
+                </p>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
 
       <nav className={`wrap ${s.foot} no-print`} aria-label="Case study navigation">
-        <Link href={`/work/${next.slug}/`} className={s.next}>
+        <Link href={`/work/${next.slug}/`} className={s.next} data-tilt>
           <span>Next case study</span>
-          {next.title} →
+          <strong>{next.title}</strong>
+          <em>{next.summary}</em>
+          <b aria-hidden="true">→</b>
         </Link>
         <div className={s.footCta}>
-          <a href={`mailto:${contact.email}`}>Email me</a>
-          <a href={CV_PATH} download>
+          <a href={`mailto:${contact.email}`} data-magnetic>
+            Email me
+          </a>
+          <a href={CV_PATH} download data-magnetic>
             Download CV
           </a>
         </div>

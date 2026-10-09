@@ -2,10 +2,25 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(160%) blur(12px);
-  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
   border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+:global(html[data-nav="hidden"]) .nav {
+  transform: translateY(-100%);
+}
+
+.progress {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent), #f5a524);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scroll, 0));
 }
 
 .inner {
@@ -24,21 +39,44 @@
 }
 .brand span {
   color: var(--accent);
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.brand:hover span {
+  transform: translateY(-6px) scale(1.4);
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 2.4vw, 28px);
+  gap: clamp(10px, 2.2vw, 26px);
   font-size: 15px;
 }
-.links a {
+.links > a:not(.cv) {
+  position: relative;
   text-decoration: none;
   color: var(--ink-2);
   transition: color 0.2s;
 }
-.links a:hover {
+.links > a:not(.cv)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+.links > a:hover,
+.links > a[aria-current] {
   color: var(--ink);
+}
+.links > a:hover::after,
+.links > a[aria-current]::after {
+  transform: scaleX(1);
 }
 
 .cv {
@@ -47,11 +85,20 @@
   padding: 6px 14px;
   border-radius: 999px;
   font-weight: 600;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    transform 0.25s ease-out;
 }
 .cv:hover {
   background: var(--accent);
 }
 
+@media (max-width: 860px) {
+  .hideMd {
+    display: none;
+  }
+}
 @media (max-width: 560px) {
   .hideSm {
     display: none;

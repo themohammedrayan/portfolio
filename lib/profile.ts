@@ -25,6 +25,7 @@ const ProfileSchema = z.object({
   contact: z.object({
     name: z.string(),
     headline_default: z.string(),
+    headlines: z.record(z.string()).default({}),
     email: z.string().email(),
     phone: z.string(),
     location: z.string(),
@@ -124,4 +125,10 @@ export function formatMonth(ym: string): string {
   if (ym === "present") return "Present";
   const [y, m] = ym.split("-");
   return `${MONTHS[Number(m) - 1]} ${y}`;
+}
+
+/** Values the count-up animation can run on: one plain number with optional prefix/suffix
+ * ("₹4 Cr+", "2,500+"), but not dates ("Apr 2026") or codes ("L1/L2/L3"). */
+export function countable(v: string): boolean {
+  return /^\D*\d[\d,]*\D*$/.test(v) && !/^[A-Z][a-z]{2} \d{4}$/.test(v);
 }

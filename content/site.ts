@@ -1,9 +1,12 @@
 // Site narrative. Facts and figures are pulled from the master profile by bullet id
 // (bullet(), metric()); the prose around them adds framing only, never new numbers.
 // tests/fact-check.test.ts fails the build if a number on any page is not in the YAML.
-import { bullet, metric, rupees } from "@/lib/profile";
+import { bullet, loadProfile, metric, rupees } from "@/lib/profile";
 
-export const SITE_URL = "https://rayanmohammed.vercel.app";
+// Vercel sets VERCEL_PROJECT_PRODUCTION_URL at build time to the project's production domain.
+export const SITE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "https://portfolio-lime-three-nn4etos41v.vercel.app";
 export const GITHUB = "github.com/themohammedrayan";
 export const CV_PATH = "/Mohammed-Rayan-CV.pdf";
 
@@ -11,6 +14,8 @@ export type Stat = { value: string; label: string };
 
 export type CaseStudy = {
   slug: string;
+  /** Short name for chips and tooltips. */
+  short: string;
   kicker: string;
   title: string;
   summary: string;
@@ -23,6 +28,20 @@ export type CaseStudy = {
   did: string[];
   outcome: string[];
 };
+
+/** Roles for the hero ticker: the default headline, then each angle's headline from the profile. */
+export function roles(): string[] {
+  const c = loadProfile().contact;
+  return [c.headline_default, ...Object.values(c.headlines)];
+}
+
+/** Case studies whose stack uses a skill (matched on the skill's name before any brackets). */
+export function usedIn(skill: string): string[] {
+  const key = skill.split(" (")[0].toLowerCase();
+  return caseStudies()
+    .filter((c) => c.stack.some((x) => x.toLowerCase().split(" (")[0] === key))
+    .map((c) => c.short);
+}
 
 export function heroStats(): Stat[] {
   return [
@@ -75,6 +94,7 @@ export function caseStudies(): CaseStudy[] {
   return [
     {
       slug: "admission-portal",
+      short: "Admission Portal",
       kicker: "Product ownership · Xylem Learning",
       title: "One portal for admissions, payments, approvals and hostels",
       summary: bullet("xl_portal", 2),
@@ -102,6 +122,7 @@ export function caseStudies(): CaseStudy[] {
     },
     {
       slug: "payments",
+      short: "Payments",
       kicker: "Payments · Xylem Learning",
       title: "Building the fee-collection pillars: a parent app and SMS payment links",
       summary: bullet("xl_payments", 0),
@@ -121,6 +142,7 @@ export function caseStudies(): CaseStudy[] {
     },
     {
       slug: "refunds-approvals",
+      short: "Refunds",
       kicker: "Workflows · Xylem Learning",
       title: "Refunds and approvals that follow policy, not inbox threads",
       summary: bullet("xl_refunds", 2),
@@ -147,6 +169,7 @@ export function caseStudies(): CaseStudy[] {
     },
     {
       slug: "data-trust",
+      short: "Data trust",
       kicker: "Data quality & security · Xylem Learning",
       title: "Making the numbers finance relies on actually add up",
       summary: bullet("xa_reconciliation", 1),
@@ -175,6 +198,7 @@ export function caseStudies(): CaseStudy[] {
     },
     {
       slug: "rivlo",
+      short: "Rivlo",
       kicker: "Zero to one · Side project",
       title: "Rivlo: a ranked 1v1 exam-prep battle app, built solo",
       summary: bullet("rv_build", 0),
@@ -202,6 +226,7 @@ export function caseStudies(): CaseStudy[] {
     },
     {
       slug: "side-builds",
+      short: "Side builds",
       kicker: "Shipping for real users · Side projects",
       title: "A live WhatsApp bot, and the tool that tailored my CV",
       summary:

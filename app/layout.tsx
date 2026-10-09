@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { SITE_URL } from "@/content/site";
+import { CV_PATH, GITHUB, SITE_URL, caseStudies } from "@/content/site";
 import { loadProfile } from "@/lib/profile";
 import Nav from "@/components/Nav";
-import Motion from "@/components/Motion";
+import Effects from "@/components/Effects";
+import CommandPalette, { type PaletteItem } from "@/components/CommandPalette";
+import Toaster from "@/components/Toast";
 import "./globals.css";
 
 const p = loadProfile();
@@ -35,6 +37,22 @@ export const viewport: Viewport = {
 // Runs before paint: applies a saved theme and opts into scroll-reveal.
 const boot = `try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")`;
 
+const paletteItems: PaletteItem[] = [
+  ...caseStudies().map((c) => ({ id: c.slug, label: c.title, group: "Case studies", hint: c.kicker.split(" · ")[0], href: `/work/${c.slug}/` })),
+  { id: "go-home", label: "Home", group: "Go to", href: "/" },
+  { id: "go-work", label: "Selected work", group: "Go to", href: "/#work" },
+  { id: "go-process", label: "How I work", group: "Go to", href: "/#process" },
+  { id: "go-experience", label: "Experience", group: "Go to", href: "/#experience" },
+  { id: "go-toolkit", label: "Toolkit", group: "Go to", href: "/#toolkit" },
+  { id: "go-contact", label: "Contact", group: "Go to", href: "/#contact" },
+  { id: "email", label: "Copy email address", group: "Actions", hint: p.contact.email, action: "copy-email" },
+  { id: "cv", label: "Download CV (PDF)", group: "Actions", href: CV_PATH, download: true },
+  { id: "linkedin", label: "Open LinkedIn", group: "Actions", hint: p.contact.linkedin, href: `https://${p.contact.linkedin}` },
+  { id: "github", label: "Open GitHub", group: "Actions", hint: GITHUB, href: `https://${GITHUB}` },
+  { id: "open-rivlo", label: "Open Rivlo", group: "Actions", hint: "rivlo.live", href: "https://rivlo.live" },
+  { id: "theme", label: "Toggle dark mode", group: "Actions", action: "theme" },
+];
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -47,7 +65,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         <Nav />
         <main id="main">{children}</main>
-        <Motion />
+        <Effects />
+        <CommandPalette items={paletteItems} email={p.contact.email} />
+        <Toaster />
         <Analytics />
       </body>
     </html>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CV_PATH } from "@/content/site";
+import PaletteButton from "./PaletteButton";
 import ThemeToggle from "./ThemeToggle";
 import s from "./Nav.module.css";
 
@@ -11,20 +12,26 @@ export default function Nav() {
           Rayan<span>.</span>
         </Link>
         <div className={s.links}>
-          <Link href="/#work">Work</Link>
-          <Link href="/#experience">Experience</Link>
-          <Link href="/#about" className={s.hideSm}>
-            About
+          <Link href="/#work" data-spy="work">
+            Work
           </Link>
-          <Link href="/#contact" className={s.hideSm}>
+          <Link href="/#process" data-spy="process" className={s.hideMd}>
+            Process
+          </Link>
+          <Link href="/#experience" data-spy="experience" className={s.hideSm}>
+            Experience
+          </Link>
+          <Link href="/#contact" data-spy="contact" className={s.hideSm}>
             Contact
           </Link>
+          <PaletteButton />
           <ThemeToggle />
-          <a href={CV_PATH} className={s.cv} download>
+          <a href={CV_PATH} className={s.cv} download data-magnetic>
             CV
           </a>
         </div>
       </div>
+      <div className={s.progress} aria-hidden="true" />
     </nav>
   );
 }
