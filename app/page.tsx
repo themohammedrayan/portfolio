@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CopyEmail from "@/components/CopyEmail";
 import RoleTicker from "@/components/RoleTicker";
+import { GitHubIcon, LinkedInIcon } from "@/components/Icons";
 import {
   CV_PATH,
   GITHUB,
@@ -105,8 +106,27 @@ export default function Home() {
                 </svg>
               </a>
               <CopyEmail email={c.email} className={s.secondary} />
-              <a className={s.ghost} href={`https://${c.linkedin}`} target="_blank" rel="noopener" data-magnetic>
-                LinkedIn ↗
+              <a
+                className={s.iconBtn}
+                href={`https://${c.linkedin}`}
+                target="_blank"
+                rel="noopener"
+                aria-label="LinkedIn (shortcut L)"
+                data-tip="LinkedIn · L"
+                data-magnetic
+              >
+                <LinkedInIcon />
+              </a>
+              <a
+                className={s.iconBtn}
+                href={`https://${GITHUB}`}
+                target="_blank"
+                rel="noopener"
+                aria-label="GitHub (shortcut G)"
+                data-tip="GitHub · G"
+                data-magnetic
+              >
+                <GitHubIcon />
               </a>
             </div>
           </div>
@@ -359,7 +379,11 @@ export default function Home() {
           </ul>
           <p className={s.fine}>
             Every number on this site comes from the same hand-verified fact bank as my CV, and a test fails the build if
-            one doesn&rsquo;t. Press <kbd>⌘K</kbd> to get around.
+            one doesn&rsquo;t.
+          </p>
+          <p className={`${s.fine} ${s.keys}`}>
+            Shortcuts: <kbd>L</kbd> LinkedIn · <kbd>G</kbd> GitHub · <kbd>E</kbd> copy email · <kbd>C</kbd> CV ·{" "}
+            <kbd>T</kbd> theme · <kbd>⌘K</kbd> everything
           </p>
         </div>
       </footer>

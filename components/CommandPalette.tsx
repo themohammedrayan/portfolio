@@ -15,7 +15,14 @@ export type PaletteItem = {
   href?: string;
   action?: "copy-email" | "theme";
   download?: boolean;
+  /** Single key that runs this item from anywhere on the page (shown as a kbd hint). */
+  shortcut?: string;
 };
+
+function typingInField(t: EventTarget | null) {
+  const el = t as HTMLElement | null;
+  return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName));
+}
 
 export function openPalette() {
   window.dispatchEvent(new Event("open-palette"));
@@ -26,6 +33,8 @@ export default function CommandPalette({ items, email }: { items: PaletteItem[];
   const [q, setQ] = useState("");
   const [i, setI] = useState(0);
   const input = useRef<HTMLInputElement>(null);
+  const openRef = useRef(false);
+  openRef.current = open;
   const router = useRouter();
 
   const results = useMemo(() => {
@@ -52,6 +61,13 @@ export default function CommandPalette({ items, email }: { items: PaletteItem[];
         e.preventDefault();
         setOpen((o) => !o);
       } else if (e.key === "Escape") setOpen(false);
+      else if (!e.metaKey && !e.ctrlKey && !e.altKey && !openRef.current && !typingInField(e.target)) {
+        const hit = items.find((x) => x.shortcut === e.key.toLowerCase());
+        if (hit) {
+          e.preventDefault();
+          run(hit);
+        }
+      }
     };
     const onOpen = () => setOpen(true);
     addEventListener("keydown", onKey);
@@ -60,6 +76,8 @@ export default function CommandPalette({ items, email }: { items: PaletteItem[];
       removeEventListener("keydown", onKey);
       removeEventListener("open-palette", onOpen);
     };
+    // run() only reads stable values (router, email); items come from the server and don't change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -144,7 +162,10 @@ export default function CommandPalette({ items, email }: { items: PaletteItem[];
                   onClick={() => run(x)}
                 >
                   <span>{x.label}</span>
-                  {x.hint ? <span className={s.hint}>{x.hint}</span> : null}
+                  <span className={s.hint}>
+                    {x.hint}
+                    {x.shortcut ? <kbd>{x.shortcut.toUpperCase()}</kbd> : null}
+                  </span>
                 </button>
               </li>
             );

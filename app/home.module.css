@@ -267,11 +267,44 @@
   background: var(--ink);
   color: var(--bg);
 }
-.ghost {
+.ctas a.iconBtn {
+  position: relative;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
   color: var(--ink-2);
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg-raised) 70%, transparent);
 }
-.ghost:hover {
-  color: var(--accent);
+.ctas a.iconBtn:hover {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.iconBtn::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  padding: 5px 9px;
+  border-radius: 8px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -4px);
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.iconBtn:hover::after,
+.iconBtn:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 .stats {
@@ -995,7 +1028,7 @@
   padding: 0;
   margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
   gap: 24px;
 }
 .contactList li {
@@ -1031,6 +1064,9 @@
   margin: 64px 0 0;
   font-size: 13px;
   opacity: 0.55;
+}
+.keys {
+  margin-top: 10px;
 }
 .fine kbd {
   background: #1d1e23;

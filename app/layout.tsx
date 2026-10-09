@@ -45,12 +45,12 @@ const paletteItems: PaletteItem[] = [
   { id: "go-experience", label: "Experience", group: "Go to", href: "/#experience" },
   { id: "go-toolkit", label: "Toolkit", group: "Go to", href: "/#toolkit" },
   { id: "go-contact", label: "Contact", group: "Go to", href: "/#contact" },
-  { id: "email", label: "Copy email address", group: "Actions", hint: p.contact.email, action: "copy-email" },
-  { id: "cv", label: "Download CV (PDF)", group: "Actions", href: CV_PATH, download: true },
-  { id: "linkedin", label: "Open LinkedIn", group: "Actions", hint: p.contact.linkedin, href: `https://${p.contact.linkedin}` },
-  { id: "github", label: "Open GitHub", group: "Actions", hint: GITHUB, href: `https://${GITHUB}` },
+  { id: "email", label: "Copy email address", group: "Actions", hint: p.contact.email, action: "copy-email", shortcut: "e" },
+  { id: "cv", label: "Download CV (PDF)", group: "Actions", href: CV_PATH, download: true, shortcut: "c" },
+  { id: "linkedin", label: "Open LinkedIn", group: "Actions", hint: p.contact.linkedin, href: `https://${p.contact.linkedin}`, shortcut: "l" },
+  { id: "github", label: "Open GitHub", group: "Actions", hint: GITHUB, href: `https://${GITHUB}`, shortcut: "g" },
   { id: "open-rivlo", label: "Open Rivlo", group: "Actions", hint: "rivlo.live", href: "https://rivlo.live" },
-  { id: "theme", label: "Toggle dark mode", group: "Actions", action: "theme" },
+  { id: "theme", label: "Toggle dark mode", group: "Actions", action: "theme", shortcut: "t" },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

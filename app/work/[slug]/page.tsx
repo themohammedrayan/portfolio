@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CV_PATH, caseStudies } from "@/content/site";
+import { CV_PATH, GITHUB, caseStudies } from "@/content/site";
+import { GitHubIcon, LinkedInIcon } from "@/components/Icons";
 import { countable, loadProfile } from "@/lib/profile";
 import s from "./case.module.css";
 
@@ -133,6 +134,19 @@ export default async function CaseStudyPage({ params }: Params) {
           <b aria-hidden="true">→</b>
         </Link>
         <div className={s.footCta}>
+          <a
+            href={`https://${contact.linkedin}`}
+            target="_blank"
+            rel="noopener"
+            className={s.iconLink}
+            aria-label="LinkedIn"
+            data-magnetic
+          >
+            <LinkedInIcon />
+          </a>
+          <a href={`https://${GITHUB}`} target="_blank" rel="noopener" className={s.iconLink} aria-label="GitHub" data-magnetic>
+            <GitHubIcon />
+          </a>
           <a href={`mailto:${contact.email}`} data-magnetic>
             Email me
           </a>

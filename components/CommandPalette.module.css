@@ -72,6 +72,9 @@
   color: var(--accent);
 }
 .hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-size: 13px;
   color: var(--ink-3);
   white-space: nowrap;
