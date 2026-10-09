@@ -1,0 +1,719 @@
+# Master profile: the single source of truth for every CV this app produces.
+#
+# Rules:
+# - Edited by hand only. The LLM selects and lightly rewords; it never adds facts.
+# - Every number is either VERIFIED (git, production logs, work mail, Drive, Razorpay
+#   exports; handover of 2026-10-05/06) or STATED by Rayan. Each metric carries a
+#   comment saying which. Do not add a figure without a source.
+# - Bullet `metrics` hold the figures for that bullet. The validator rejects any number
+#   in tailored text that is not in the bullet's variants or metrics.
+# - `rank`: higher = more important. The overflow fitter drops the lowest rank first.
+# - `default`: included in the untailored default CV (npm run render:default).
+# - Wording rules: "platform holding 1M+ enrollment records" is allowed; never
+#   "1M+ enrollments handled". "10M+" is records (attendance, results, enrollments),
+#   never enrollments. No first person ("I", "my") in bullets.
+#
+# Changes vs previous version (2026-10-06):
+# - BRDs 10+ -> 15+, staff 100+ -> 500+, reports 84 -> 150+ (stated by Rayan)
+# - Added Razorpay collections (Rs 4 Cr+, 2,500+ payments, Jul-Aug 2026; verified). 2026-10-07: totals
+#   now include the second receivables portal (Rs 4 Cr+, Rs 100 Cr+, 100,000+, 30+ doctypes)
+# - Added Metabase automation of App -> CRM -> ERP check (stated)
+# - Added collections-reporting bullet and platform-scale bullet
+# - Removed xa_ops_reports (those reports were not Rayan's) and the "5 fee heads" detail
+# - Fixed "2.5 years at Xylem" wording; Outlier no longer optional (summaries say 2.5 yrs)
+# - Moved scale bullet (records, imports) to the lead role, since it runs into 2026
+# - Removed duplicate clauses between bullets so the fitter can't repeat a fact
+# - 2024-25 title confirmed as "Product Analyst" (was "Analyst (MIS & ERP)"); Rivlo is at beta,
+#   so its bullets say beta, not deployment
+#
+# Changes 2026-10-07 (audit of work Gmail, Drive, xylem git, Rivlo code):
+# - Admission Portal launch Sep 2026 -> Apr 2026 (go-live email Apr 25 2026; the Sep 23 2026
+#   email was Rayan's all-staff intro draft, sent to Sahbir only)
+# - Parent web app (xylem www/student_fee_details) credited to Rayan: built by him, committed
+#   from Ganu's device (git shows ganureddypw); go-live emails Apr 29 2026 (online) and
+#   May 27 2026 (offline batches). Own bullet added: xl_parent_app
+# - 1M+ enrollment records now VERIFIED (1,212,958, prod Query Report 2026-10-05)
+# - Staff 500+, reports 150+, team of 5, Ragam and certificates marked VERIFIED on Rayan's
+#   confirmation (2026-10-07); no document evidence found for these
+# - Added: portal payment volume, user feedback, in-app refund go-live, Meal Tracker, exam
+#   analytics, Report Builder + teacher dashboard, audit support, approval/SOP process work,
+#   vendor/PII data-flow mapping, 2025 RCAs, pre-git builds, training; Rivlo readiness score,
+#   question quality, CAT vertical
+# - Core bullets (`core: true`) appear on every CV that includes their section and are never
+#   dropped by the page fitter: xl_portal, xl_payments, and rv_build (Rivlo's anchor, only when
+#   Rivlo is on the CV). Kept to 2 on the current role so its other 2-4 slots stay tailored;
+#   everything else relies on rank. xl_payments now merges the former xl_portal_volume;
+#   xl_modules is new (rank 75); the static-QR RCA is left out; xa_reconciliation rank 95 -> 70
+
+# The wording rules above, as data: every prompt (CV, fit analysis, cover letter) includes
+# these, since YAML comments never reach the model.
+wording_rules:
+  - '"Platform holding 1M+ enrollment records" is allowed; never write "1M+ enrollments handled".'
+  - '"10M+" is records (attendance, results, enrollments), never enrollments.'
+  - 'No first person ("I", "my") in CV bullets, headline or summary.'
+
+contact:
+  name: Mohammed Rayan A
+  headline_default: Product Analyst, Team Lead
+  headlines:
+    product-analyst: Product & Data Analyst
+    business-analyst: Business Analyst
+    payments-product: Product Analyst · Payments & Internal Platforms
+    bizops: Business Operations Analyst
+  email: therayanmohammed@gmail.com
+  phone: "+91 7356080604"
+  location: Calicut, relocating to Bangalore
+  availability: 30-day notice
+  linkedin: linkedin.com/in/rayanmohammed
+  website: rivlo.live
+
+summaries:
+  - id: sum_data
+    angle: product-analyst
+    text: >-
+      Analyst with 2.5 years across analytics and internal product at Xylem Learning
+      (Physics Wallah) and Outlier. Run data operations on a platform holding 1M+
+      enrollment records: build the dashboards finance and leadership use, and turn data
+      findings into fixes that ship.
+      SQL, Python, Power BI, Metabase daily. NIT Calicut.
+  - id: sum_ba
+    angle: business-analyst
+    text: >-
+      Business analyst with 2.5 years' experience, the last two turning finance and
+      operations rules into working systems at Xylem Learning (Physics Wallah). Wrote 15+
+      requirement documents, managed an external development team against them, and
+      launched the admissions and payments platform used by 500+ staff. Strong in
+      payments, approvals, refunds and reconciliation. NIT Calicut.
+  - id: sum_payments
+    angle: payments-product
+    text: >-
+      Product analyst and team lead who owns Xylem Learning's (Physics Wallah) admissions
+      and payments platform: find the problem in the data, write the spec, build it,
+      launch it. Shipped online payments that collected Rs 4 Cr+ in their first two
+      months, plus refund and approval workflows, on a platform used by 500+ staff.
+      Solo-built Rivlo, a ranked exam-prep app. NIT Calicut.
+  - id: sum_ops
+    angle: bizops
+    text: >-
+      Operations analyst and team lead with 2.5 years' experience, the last two running
+      the admissions, fee and hostel operations of Xylem Learning (Physics Wallah) across
+      Kerala centres. Fix broken processes with data, then systematise them: approvals,
+      refunds, collections and reconciliation on a platform holding 1M+ enrollment
+      records. Lead a team of 5
+      and work daily with accounts, centre heads and hostel managers. NIT Calicut.
+
+experience:
+  - id: xylem_lead
+    title: Product Analyst, Team Lead
+    company: Xylem Learning (a Physics Wallah company)
+    start: 2026-01
+    end: present
+    location: Calicut, Kerala
+    bullets:
+      - id: xl_portal
+        tags: [product-ownership, platform, launch, admissions]
+        metrics:
+          staff: "500+"            # VERIFIED: confirmed by Rayan 2026-10-07 (earlier stated 100+)
+          api_endpoints: "170+"    # VERIFIED: git, 174 whitelisted functions
+          launch: "Apr 2026"       # VERIFIED: go-live email Apr 25 2026 (Sahbir); first git commit Apr 21 2026
+        rank: 100
+        default: true
+        core: true
+        variants:
+          - "Owned the Admission Portal from spec to launch: enrollment, payment collection, approvals, hostel management, dashboards and support tickets in one role-based app, launched in Apr 2026."
+          - "Gathered requirements, wrote specs and delivered the Admission Portal: enrollment, payments, approvals, hostel and reports in one screen, launched to all admissions, accounts and hostel staff with training material."
+          - "Moved admissions, payment collection, approvals and hostel management into one portal used by 500+ staff, with role-based access and a support-ticket queue."
+
+      - id: xl_portal_feedback
+        tags: [launch, stakeholder-management, admissions]
+        metrics: {}
+        rank: 55
+        default: false
+        variants:
+          - "After launch, the admissions team reported faster student verification than the previous module, and Physics Wallah tech product management recognised the portal."
+
+      # Merged with the former xl_portal_volume (2026-10-07). The parent web app and SMS payment
+      # links are Xylem's two fee-collection pillars (Rayan).
+      - id: xl_payments
+        tags: [payments, fintech, product-ownership, platform, scale]
+        metrics:
+          collected_online: "Rs 4 Cr+"    # VERIFIED by Rayan 2026-10-07: Rs 4 Cr+ in Razorpay exports (parent app + payment links, Jul-Aug 2026) plus the second receivables portal, checked by hand (not connected)
+          online_payments: "2,500+"       # VERIFIED: 2,533 captured payments excl. 9 test txns
+          period: "first two months"
+          portal_collected: "Rs 100 Cr+"  # VERIFIED by Rayan 2026-10-07: Rs 100 Cr+ from the main portal plus the second receivables portal, checked by hand. Main portal: prod Query Report 2026-10-05, portal-mode payments (Razorpay, card, cash, G-Pay, cheque) Apr 21-Oct 5 2026; excludes PW app imports
+          portal_payments: "100,000+"     # VERIFIED by Rayan 2026-10-07: 78,773 in the main portal (same query) plus the second receivables portal, checked by hand
+        rank: 98
+        default: true
+        core: true
+        variants:
+          - "Built Xylem's two fee-collection pillars, a parent web app and SMS payment links: Rs 4 Cr+ collected online in the first two months; fee collection has since recorded Rs 100 Cr+ across 100,000+ payments."
+          - "Shipped the parent web app and SMS payment links that now carry fee collection: Rs 4 Cr+ across 2,500+ online payments in the first two months."
+          - "Payments platform: Rs 100 Cr+ recorded across 100,000+ fee payments, with the parent web app and SMS payment links as the main collection channels."
+
+      - id: xl_modules
+        tags: [product-ownership, payments, workflows, approvals, finance]
+        metrics: {}  # VERIFIED: git — Discount and Concessions (Dec 2025-Mar 2026), hostel management (Feb 2026 on), refunds and fee transfers (Jul-Sep 2026)
+        rank: 75  # was 96; at 96 it won every finance-adjacent JD, including AI product roles
+        default: true
+        variants:
+          - "Built the platform's core finance modules end to end: discounts and concessions, hostel allotment and billing, refunds, and fee transfers between course, hostel and transport heads, each with role-based approvals."
+          - "Owned the major ERP modules from spec to go-live: discounts and concessions, hostel management, refunds and fee transfers."
+
+      - id: xl_parent_app
+        tags: [payments, product-ownership, launch, mobile, fintech]
+        metrics:
+          launch: "Apr 2026"  # VERIFIED: go-live email Apr 29 2026; offline batches May 27 2026. Built by Rayan, committed from Ganu's device
+        rank: 92
+        default: true
+        variants:
+          - "Built the parent web app: OTP login by parent mobile, attendance, exam results and hostel details per child, and Razorpay payment per fee head, with webhook reconciliation that posts each fee automatically."
+          - "Built the parent fee app behind online collections, live since Apr 2026: OTP login, single and bulk Razorpay payments across course and hostel fees, automatic posting via webhook, and invoice download."
+          - "Built a parent web app for fees, attendance and exam results, one of Xylem's two fee-collection pillars (with SMS payment links) since Apr 2026."
+
+      - id: xl_collections_reporting
+        tags: [analytics, reporting, payments, finance]
+        metrics: {}
+        rank: 68
+        default: false
+        variants:
+          - "Built month-on-month collection reporting from Razorpay exports, split by channel (parent app vs payment link), fee component and week of month, to track how reminders drive payments."
+
+      - id: xl_refunds
+        tags: [payments, workflows, approvals, refunds, retention]
+        metrics:
+          approval_levels: "L1/L2/L3"  # VERIFIED: git
+        rank: 90
+        default: true
+        variants:
+          - "Refunds and approvals: built policy-based refunds (amount from days since joining), L1/L2/L3 approvals, a retention step that closes requests when the student stays, and one-time bank-detail links."
+          - "Designed multi-level approval workflows (L1/L2/L3) for discounts, drops, fee transfers and refunds, with mandatory remarks, retention capture and secure bank-detail collection."
+          - "Standardised approvals: L1/L2/L3 sign-off for discounts, drops, fee transfers and refunds, with mandatory remarks and a retention step before any refund is paid."
+
+      - id: xl_refund_app
+        tags: [refunds, workflows, approvals, launch]
+        metrics:
+          live: "Sep 2026"  # VERIFIED: go-live email Sep 26 2026; rollout session Oct 7 2026
+        rank: 66
+        default: false
+        variants:
+          - "Took refunds live in the Xylem Learning App in Sep 2026: the policy is detected and the amount locked automatically, out-of-policy cases need documents, routed centre head, category head, then refunds team."
+
+      - id: xl_money_movement
+        tags: [payments, fintech, workflows]
+        metrics: {}
+        rank: 60
+        default: false
+        variants:
+          - "Money movement: fee transfers between course, hostel and transport heads capped at amount paid; month-wise transport fee slabs; capped fee waivers."
+          - "Built fee transfers between course, hostel and transport fee heads, capped at the amount paid, plus month-wise transport fee slabs and capped fee waivers."
+
+      - id: xl_hostel_billing
+        tags: [requirements, workflows, uat, finance]
+        metrics:
+          test_scenarios: "16"  # VERIFIED: email Jul 30 2026
+        rank: 70
+        default: false
+        variants:
+          - "Translated hostel billing policy into rules (day-based proration across AC/Non-AC, transfers, vacate dues) and signed it off with accounts using a 16-scenario test pack."
+          - "Signed off new hostel billing rules with accounts using a 16-scenario test pack, then reconciled dues cohort by cohort (Integrated, Hybrid, Super 30)."
+
+      - id: xl_trust_data
+        tags: [data-security, compliance]
+        metrics:
+          doctypes: "30+"  # VERIFIED by Rayan 2026-10-07: 28 doctypes in git 2026-08-27 plus the second receivables portal, checked by hand
+        rank: 75
+        default: true
+        variants:
+          - "Locked down student data: removed export and print rights on sensitive records and masked personal data in self-serve reports."
+          - "Ran a data-security clean-up: removed bulk export rights on student and fee records and masked personal data in reports."
+          - "Tightened access control: removed custom permissions from 30+ record types, export and print rights on sensitive records, and masked personal data server-side."
+
+      - id: xl_fee_sanity
+        tags: [data-quality, reconciliation, analytics]
+        metrics: {}
+        rank: 65
+        default: false
+        variants:
+          - "Designed a fee-sanity check that reconciles paid amounts against fee, transfer and refund records, with one-click correction and an audit trail."
+          - "Built a fee-sanity check with one-click correction and an audit trail, catching paid-amount mismatches before they reach finance reports."
+
+      - id: xl_reports
+        tags: [sql, reporting, analytics, finance]
+        metrics:
+          reports: "150+"  # VERIFIED: confirmed by Rayan 2026-10-07 across current and old email (84 traceable under current email)
+        rank: 80
+        default: false
+        variants:
+          - "Built 150+ SQL reports and data pulls in the ERP, including fee approval, hostel capacity, fee balance and payment sanity reports used by finance and centre teams."
+          - "Wrote 150+ SQL reports and data pulls for finance, centre and hostel teams."
+
+      - id: xl_dashboards
+        tags: [dashboards, analytics, bi, kpis]
+        metrics: {}
+        rank: 72
+        default: false
+        variants:
+          - "Built analytics dashboards with drill-down for enrollments, revenue, hostel occupancy, discounts, refunds, attendance and exam results, reconciling centre and vertical KPI definitions."
+          - "Built drill-down dashboards for enrollments, revenue, hostel occupancy, discounts and refunds, with KPI definitions reconciled across centre and vertical views."
+
+      - id: xl_scale
+        tags: [data-ops, erp, data-quality]
+        metrics:
+          # 93,610 enrollments under current email (prod tabVersion, Feb 2025-Oct 2026) VERIFIED; count
+          # dropped from CV text by Rayan's choice (2026-10-07), summaries lead with the 1M+ platform
+          imports: "1,100+"              # VERIFIED: prod, 1,159 Data Imports
+          active_students: "59,109"      # VERIFIED: prod Query Report 2026-10-05 (moved from xl_portal_volume)
+        rank: 80
+        default: true
+        variants:
+          - "Since 2025, ran 1,100+ bulk data imports and maintained enrollment records in production."
+          - "Maintained enrollment records in production and ran 1,100+ bulk data imports since 2025."
+
+      - id: xl_request_volume
+        tags: [ops, stakeholder-management, data-ops, support]
+        metrics:
+          threads: "750+"     # VERIFIED: work Gmail in:sent, 2026-10-07: 762 threads replied in (excl. self), 4,176 messages in those threads
+          since: "Nov 2024"   # first sent work mail Nov 2024
+        rank: 82
+        default: true
+        variants:
+          - "Resolved requests from centres, accounts, hostel and admissions teams across 750+ email threads since Nov 2024: enrollment and program changes, fee and dues corrections, refunds, approvals and data pulls."
+          - "Handled 750+ email request threads from centres, accounts and hostel teams since Nov 2024, alongside the product work."
+
+      - id: xl_platform_scale
+        tags: [data-ops, erp, scale]
+        metrics:
+          platform_enrollments: "1M+"  # VERIFIED: prod Query Report 2026-10-05, 1,212,958 enrollment records all-time
+          records: "10M+"              # STATED by Rayan: attendance, results, TC and enrollment rows
+        rank: 50
+        default: false
+        variants:
+          - "Worked across a platform holding 1M+ enrollment records and 10M+ attendance, result and enrollment records."
+
+      - id: xl_meal_tracker
+        tags: [product-ownership, workflows, approvals, launch, ops]
+        metrics:
+          launch: "Sep 2026"   # VERIFIED: "Launching the Meal Tracker on the Student Portal" email Sep 26 2026; KT done Sep 30
+          reminder: "9 AM"     # VERIFIED: git 2026-10-05
+        rank: 58
+        default: false
+        variants:
+          - "Launched a Meal Tracker in Sep 2026: mentors log daily hostel meal counts, hostel managers approve within three days from approval buckets, and a 9 AM email chases pending approvals."
+          - "Built daily hostel meal tracking on the student portal with hostel-manager approvals and an automated reminder email."
+
+      - id: xl_academics_analytics
+        tags: [analytics, dashboards, academics, self-serve]
+        metrics: {}
+        rank: 57
+        default: false
+        variants:
+          - "Built exam analytics in the portal: an exam master, marks entry, and summary views by centre, at-risk students and individual student."
+
+      - id: xl_self_serve
+        tags: [self-serve, reporting, dashboards, ops]
+        metrics: {}
+        rank: 52
+        default: false
+        variants:
+          - "Gave ops teams self-serve tools: a report builder with joins, charts and pivots (contact fields hidden), a teacher utilisation dashboard and one-click Bonafide Certificates."
+
+      - id: xl_audit
+        tags: [audit, finance, compliance, data-ops]
+        metrics: {}
+        rank: 54
+        default: false
+        variants:
+          - "Supplied data packs for internal audit, including revenue samples built from online programme and coupon creation data."
+
+      - id: xl_process_design
+        tags: [process-design, approvals, sop, stakeholder-management]
+        metrics: {}
+        rank: 56
+        default: false
+        variants:
+          - "Proposed a zone-based L1/L2 approval structure for portal approvals and walked the accounts team through the new process for dropped students."
+
+      - id: xl_data_flow_mapping
+        tags: [compliance, data-security, vendor-management, integrations]
+        metrics: {}
+        rank: 53
+        default: false
+        variants:
+          - "Mapped the ERP's personal-data flows to third-party vendors (LeadSquared, MSG91, Gallabox, Razorpay) for a product data questionnaire."
+
+      - id: xl_team
+        tags: [leadership, team, ops]
+        metrics:
+          team: "5"        # VERIFIED: confirmed by Rayan 2026-10-07
+          ops: "2"
+          developers: "2"
+          analyst: "1"
+        rank: 85
+        default: true
+        variants:
+          - "Lead a team of 5 (2 ops, 2 developers, 1 analyst)."
+          - "Lead a team of 5 (2 ops, 2 developers, 1 analyst) handling enrollment changes, fee corrections, scholarships and hostel requests from centres, accounts and vertical heads."
+
+  - id: xylem_analyst
+    title: Product Analyst
+    company: Xylem Learning
+    start: 2024-11
+    end: 2025-12
+    location: Calicut, Kerala
+    bullets:
+      - id: xa_brds_vendor
+        tags: [requirements, brd, vendor-management, product-ownership]
+        metrics:
+          brds: "15+"  # STATED by Rayan (~12 verified in Drive)
+        rank: 90
+        default: true
+        variants:
+          - "Wrote 15+ BRDs and ran the external development vendor against a costed task list."
+          - "Wrote 15+ BRDs covering hostel allotment, discounts, refunds, program change, fee transfer and lead scoring; scoped six as a costed task list for the external vendor and tracked delivery."
+          - "Wrote BRDs and managed an external development vendor against a costed task list."
+
+      - id: xa_discount_revamp
+        tags: [product-ownership, launch, approvals]
+        metrics: {}
+        rank: 60
+        default: false
+        variants:
+          - "Led the discount module revamp to go-live: separate discount records, year-wise split, multiple discounts per enrollment and L1/L2 approvals."
+          - "Specified and launched the revamped discount module with year-wise discounts, multiple discounts per enrollment and L1/L2 approvals."
+
+      - id: xa_reconciliation
+        tags: [reconciliation, payments, data-quality, crm]
+        # Counts dropped from CV text by Rayan's choice (2026-10-07), kept here for reference:
+        # 939 missing payments traced (reco thread Oct 2025), 279 pushed through, 214 app purchases
+        # imported (Apr 2025), 545 stuck at applicant stage (Jan 98 + Feb 447, Mar 2025). All VERIFIED.
+        metrics: {}
+        rank: 70  # was 95; Rayan rates it minor next to the 2026 work
+        default: true
+        variants:
+          - "Reconciled payments across App, CRM (LeadSquared) and ERP: traced payments missing over six months and pushed them through, imported missing app purchases, flagged payments stuck at the applicant stage, then automated the check in Metabase."
+          - "Reconciled payments across systems: traced missing payments and pushed them through, then automated the App to CRM to ERP check as a Metabase dashboard."
+          - "Reconciled payments between app, CRM and ERP: traced missing payments, pushed them through and imported missing app purchases."
+
+      - id: xa_hostel_dues
+        tags: [data-ops, reconciliation, finance]
+        # Count dropped from CV text by Rayan's choice (2026-10-07): ~6,000 enrollments, VERIFIED
+        # (status email Jul 31 2025).
+        metrics: {}
+        rank: 62
+        default: false
+        variants:
+          - "Corrected hostel dues across enrollments, verifying the free-hostel exceptions by hand."
+
+      - id: xa_data_quality
+        tags: [data-quality, crm, root-cause-analysis]
+        metrics: {}
+        rank: 55
+        default: false
+        variants:
+          - "Found duplicate applicants, missing lead IDs and zero \"fee paid\" values despite payments; sent fix files that corrected the records."
+          - "Caught CRM-to-ERP data issues (duplicate applicants, missing lead IDs, unrecorded fee payments) and drove the record fixes."
+
+      - id: xa_rcas
+        tags: [root-cause-analysis, crm, payments, data-quality]
+        metrics: {}  # VERIFIED: Drive RCAs Feb 2025 (LSQ applicant->enrollment), Mar 2025 (correction data); lead-scoring doc Feb 2025. Static-QR RCA (Nov 2025) left out by Rayan's choice
+        rank: 63
+        default: false
+        variants:
+          - "Wrote root-cause analyses on CRM data lost between applicant and enrollment and on recurring data corrections, and reworked the LeadSquared lead-scoring model."
+
+      - id: xa_builds
+        tags: [product-ownership, erp, build]
+        metrics:
+          year: "2025"  # VERIFIED: Rayan's builds pushed by teammates (Mentor Portal May, Teacher Attendance Jun, Hostel Allotment Jul 2025)
+        rank: 61
+        default: false
+        variants:
+          - "Built the Mentor Portal, Teacher Attendance Portal and first Hostel Allotment flow in 2025, before taking over the codebase directly."
+
+      - id: xa_training
+        tags: [training, rollout, documentation, stakeholder-management]
+        metrics:
+          sessions: "6"      # VERIFIED: email/Drive evidence of about 6 sessions; Calendar not checked
+          invitees: "~35"    # VERIFIED: KT session May 21 2025
+        rank: 48
+        default: false
+        variants:
+          - "Ran 6 training sessions, including a knowledge-transfer session with ~35 invitees and recorded portal and LeadSquared/Metabase trainings, and drafted feature launch notes."
+
+      - id: xa_academics_dashboard
+        tags: [dashboards, bi, reporting, analytics]
+        metrics: {}
+        rank: 65
+        default: false
+        variants:
+          - "Built the weekly Academics Performance dashboard for the academic head (Looker Studio, then Power BI)."
+          - "Sent a weekly Academics Performance report to the academic head (faculty utilisation, chapter completion, lecture hours, ratings), built in Looker Studio and rebuilt in Power BI."
+
+      - id: xa_deadlock_rca
+        tags: [root-cause-analysis, engineering, databases]
+        metrics: {}
+        rank: 40
+        default: false
+        variants:
+          - "Diagnosed peak-hour deadlocks in the applicant table and recommended deferred retries."
+
+      - id: xa_retention_proposal
+        tags: [product-thinking, kpis, retention, documentation]
+        metrics: {}
+        rank: 70
+        default: false
+        variants:
+          - "Proposed a retention team with KPIs (refund retention rate, response time, churn) that became the retention step in refund approvals."
+          - "Documented the App to CRM to ERP data flow and admission SOPs; proposed a retention team with KPIs that became the retention step in refund approvals."
+
+      - id: xa_plan_flow
+        tags: [product-thinking, pricing, data-flow]
+        metrics: {}
+        rank: 75
+        default: true
+        variants:
+          - "Defined the Base/Pro plan data flow from app to CRM to ERP, later the basis for plan-based pricing (Infinity) built in 2026."
+          - "Designed the data flow for plan-based enrollment (Base/Pro) across app, CRM and ERP, which became the Infinity pricing logic."
+
+      - id: xa_erp_ops
+        tags: [ops, erp]
+        metrics: {}
+        rank: 35
+        default: false
+        variants:
+          - "Ran day-to-day ERP operations: scheme setup for new batches, course and batch changes, offered-amount and scholarship corrections across centres."
+
+  - id: outlier
+    title: SDE AI Trainer
+    company: Outlier
+    start: 2024-01
+    end: 2024-09
+    location: Remote
+    optional: false  # summaries say 2.5 years; dropping this would contradict them
+    bullets:
+      - id: ol_training
+        tags: [ai, llm, coding]
+        metrics: {}
+        rank: 50
+        default: true
+        variants:
+          - "Wrote and evaluated code to train and improve large language models."
+
+projects:
+  - id: rivlo
+    name: Rivlo
+    tagline: Ranked 1v1 Exam-Prep Battle App
+    role: Solo builder & product owner
+    stack: [React Native, FastAPI, Supabase]
+    url: rivlo.live
+    bullets:
+      - id: rv_build
+        tags: [product-ownership, zero-to-one, mobile]
+        metrics:
+          endpoints: "30+"  # VERIFIED: QuizzoV1/backend, 32 FastAPI routes
+        rank: 80
+        default: true
+        core: true
+        variants:
+          - "Designed and built a 1v1 ranked exam-prep battle app (JEE, NEET and CAT) end-to-end, from problem definition through matchmaking, adaptive learning engine and a beta release."
+          - "Took it from problem definition to beta: live 1v1 battles, practice paths, daily challenges and leaderboards (React Native, FastAPI, Supabase)."
+          - "Built to beta: live 1v1 battles, daily and friend challenges, six rank tiers and a past-paper question bank, on a FastAPI backend with 30+ endpoints."
+
+      - id: rv_readiness
+        tags: [product-design, analytics, adaptive-learning]
+        metrics: {}
+        rank: 58
+        default: false
+        variants:
+          - "Designed a live readiness score that combines topic coverage, mastery, ELO percentile and momentum, mapped to JEE, NEET and CAT rank bands."
+
+      - id: rv_question_quality
+        tags: [data-quality, algorithms, ai]
+        metrics:
+          questions: "1,800+"  # STATED: rivlo.live landing page, "1800+ questions at launch"
+        rank: 55
+        default: false
+        variants:
+          - "Kept the 1,800+ question bank clean: difficulty recalibrated automatically from answer accuracy, and duplicate questions caught with embedding similarity."
+
+      - id: rv_engine
+        tags: [algorithms, adaptive-learning, product-design]
+        metrics: {}
+        rank: 60
+        default: false
+        variants:
+          - "Designed the core adaptive learning system: subject-scoped ELO with dynamic K-factors, per-topic mastery scoring and exam-weightage-based question selection."
+          - "Designed topic mastery scoring that weights accuracy, difficulty, recency decay and consistency, driving which questions each player sees next."
+
+      - id: rv_bots
+        tags: [cold-start, marketplace, matchmaking]
+        metrics: {}
+        rank: 70
+        default: true
+        variants:
+          - "Solved cold-start matchmaking with ELO-tiered bots as fallback, so users never wait for a live opponent."
+          - "Solved cold-start matchmaking with skill-tiered bots so players never wait for an opponent."
+
+  # VERIFIED: akshaya-website commit 18ce889 "WhatsApp enquiry bot + staff follow-ups (#17)",
+  # docs/WHATSAPP_BOT.md, src/lib/whatsapp/*, src/app/dashboard/followups/*, migration
+  # 20261009000029_whatsapp_followups.sql.
+  # Live in production: VERIFIED in the Akshaya Supabase project (checked 2026-10-08). The old
+  # `whatsapp-bot` Edge Function was last called 15:29 UTC; the new webhook has logged messages
+  # since 16:06 UTC (replies sent, enquiries created, staff calls recorded on Follow-ups).
+  # TODO: add an enquiries/callbacks count as a metric once real volume builds up (launch-day
+  # traffic was only a handful of numbers, likely tests).
+  - id: akshaya_wa
+    name: WhatsApp Enquiry Bot
+    tagline: Malayalam enquiry and callback bot for an Akshaya e-Centre
+    role: Solo builder
+    stack: [Next.js, TypeScript, Supabase, WhatsApp Cloud API]
+    url: github.com/themohammedrayan/akshaya-website
+    bullets:
+      - id: wa_bot
+        tags: [chatbot, whatsapp, customer-support, zero-to-one, automation]
+        metrics: {}
+        rank: 66
+        default: false
+        variants:
+          - "Built and launched a Malayalam WhatsApp bot for an Akshaya e-Centre on Meta's WhatsApp Cloud API: customers browse services, see required documents, fees and processing time, and request a staff callback."
+          - "Built and launched a live WhatsApp enquiry bot (Next.js, Supabase, WhatsApp Cloud API) that answers service and document questions in Malayalam and logs every callback request or free-text message as an enquiry for staff."
+
+      - id: wa_followups
+        tags: [workflow-design, operations, crm, internal-tools]
+        metrics: {}
+        rank: 62
+        default: false
+        variants:
+          - "Designed the staff follow-up workflow: one open enquiry per phone number, New, Today and Overdue tabs, tap-to-call and WhatsApp buttons, and call outcomes that set the next follow-up date."
+          - "Built a shared follow-up queue for bot enquiries with call outcomes, rescheduled callbacks, a full call history per enquiry and a nav badge counting new and due follow-ups."
+
+      - id: wa_webhook
+        tags: [apis, security, reliability, backend]
+        metrics: {}
+        rank: 54
+        default: false
+        variants:
+          - "Secured the webhook by verifying Meta's request signature on the raw body, de-duplicated retried deliveries by message id, and kept the conversation logic a pure function with no I/O."
+          - "Kept running cost near zero by replying only inside customer-opened conversations with no paid message templates, and read the service catalogue live from Supabase so staff edits reach the bot."
+
+  # VERIFIED: this repo (README.md, src/lib/{tailor,validate,render,fit,cover-letter,tracker,
+  # insights}.ts, supabase/migrations/). TODO: add a count of applications tracked as a metric
+  # (from the `applications` table) if it helps.
+  - id: job_portal
+    name: Job Portal
+    tagline: JD-tailored CV and cover-letter generator with application tracker
+    role: Solo builder
+    stack: [Next.js, TypeScript, Supabase, OpenAI API, Playwright]
+    url: github.com/themohammedrayan/job-portal
+    bullets:
+      - id: jp_tailor
+        tags: [ai, llm, product-design, zero-to-one, automation]
+        metrics: {}
+        rank: 64
+        default: false
+        variants:
+          - "Built a CV-tailoring app that turns a hand-verified fact bank and a job description into a one-page tailored CV PDF, with the LLM limited to selecting and lightly rewording bullets."
+          - "Separated facts, layout and wording: an LLM picks and rewords bullets as schema-checked JSON, while a locked HTML template renders the PDF through Playwright (Next.js, TypeScript, Supabase)."
+
+      - id: jp_guardrails
+        tags: [ai, data-quality, validation, testing]
+        metrics: {}
+        rank: 60
+        default: false
+        variants:
+          - "Enforced fact checks in code: any number, skill or bullet id not backed by the fact bank is rejected, followed by a spacing lint, one-page check and rank-based overflow fitter before export."
+
+      - id: jp_fit
+        tags: [ai, llm, analytics, product-design]
+        metrics: {}
+        rank: 56
+        default: false
+        variants:
+          - "Added on-demand fit analysis and cover letters: JD requirements marked met, partial or missing with fact-bank evidence, a match score computed in code rather than by the model, and token cost per run."
+
+      - id: jp_tracker
+        tags: [analytics, dashboards, backend, database]
+        metrics: {}
+        rank: 52
+        default: false
+        variants:
+          - "Built the application tracker on Supabase: stored PDF and JD per application, automatic status history, resumes locked once sent, a follow-up queue and response-rate insights by CV angle and source."
+
+education:
+  - id: nitc
+    degree: B.Tech in Mechanical Engineering
+    institution: National Institute of Technology, Calicut (NIT Calicut)
+    start: 2020-12
+    end: 2024-09
+    # VERIFIED: confirmed by Rayan 2026-10-07
+    extra: "Procurement Head, Ragam fest: ran vendor sourcing and guest travel on a ₹20 lakh budget (~500 people, 3 days)"
+
+skills:
+  # TODO: add GA4 only if a real funnel can be walked through in an interview.
+  product:
+    - Product specs & BRDs
+    - Requirements gathering
+    - Process mapping
+    - Workflow & approval design
+    - Payments, refunds & approval flows
+    - UAT & test cases
+    - Launch & rollout
+    - Prioritisation & roadmapping
+    - Root-cause analysis
+    - Data reconciliation & quality checks
+    - Dashboard design
+    - Stakeholder & vendor management
+    - Team leadership
+    - SOP design
+    - Process improvement
+  technical:
+    - SQL (window functions, CTEs, MariaDB/PostgreSQL)
+    - Python (pandas, automation)
+    - Power BI
+    - Metabase
+    - Looker Studio
+    - Excel / Google Sheets
+    - Frappe/ERPNext
+    - LeadSquared CRM
+    - Razorpay
+    - JavaScript
+    - REST APIs
+    - FastAPI
+    - React Native
+    - Supabase
+    - Figma
+    - Notion
+
+# Skills shown on the untailored default CV, in order (must be subsets of the pools above).
+default_skills:
+  product:
+    - Product specs & BRDs
+    - Workflow & approval design
+    - Payments, refunds & approval flows
+    - UAT & test cases
+    - Launch & rollout
+    - Root-cause analysis
+    - Data reconciliation & quality checks
+    - Stakeholder & vendor management
+    - Team leadership
+  technical:
+    - SQL (window functions, CTEs, MariaDB/PostgreSQL)
+    - Python (pandas, automation)
+    - Power BI
+    - Metabase
+    - Looker Studio
+    - Frappe/ERPNext
+    - LeadSquared CRM
+    - Razorpay
+    - JavaScript
+    - FastAPI
+
+certificates:  # VERIFIED: confirmed by Rayan 2026-10-07
+  - id: cert_gda
+    name: Google Data Analytics Professional Certificate
+    issuer: Coursera
+  - id: cert_sql
+    name: SQL Advanced
+    issuer: HackerRank
+  - id: cert_azure
+    name: "Microsoft Certified: Azure AI Fundamentals"

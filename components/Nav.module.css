@@ -1,0 +1,59 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(160%) blur(12px);
+  -webkit-backdrop-filter: saturate(160%) blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.brand {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.brand span {
+  color: var(--accent);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.4vw, 28px);
+  font-size: 15px;
+}
+.links a {
+  text-decoration: none;
+  color: var(--ink-2);
+  transition: color 0.2s;
+}
+.links a:hover {
+  color: var(--ink);
+}
+
+.cv {
+  color: var(--bg) !important;
+  background: var(--ink);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.cv:hover {
+  background: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .hideSm {
+    display: none;
+  }
+}
